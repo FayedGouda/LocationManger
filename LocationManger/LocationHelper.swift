@@ -7,10 +7,10 @@ public protocol ResultViewControllerDelegate:AnyObject{
     func didTapPlace(with coordinates:CLLocationCoordinate2D)
 }
 public class ResultViewController:UIViewController, UITableViewDelegate, UITableViewDataSource{
-   
+    
     public weak var delegate:ResultViewControllerDelegate?
     private var places:[Place] = []
-
+    
     private let tableView: UITableView = {
         let table = UITableView()
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -24,7 +24,6 @@ public class ResultViewController:UIViewController, UITableViewDelegate, UITable
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.view.addSubview(tableView)
-        
     }
     
     public override func viewDidLayoutSubviews() {
@@ -68,16 +67,16 @@ public class ResultViewController:UIViewController, UITableViewDelegate, UITable
             }
         }
     }
-        public func getLocationCoordinates(place:Place, completion:@escaping(Result<CLLocationCoordinate2D, Error>)->Void){
-            guard let location = place.location else
-                {
-                    if #available(iOS 13.0, *) {
-//                        completion(.failure(AppError.unknownError))
-                                   } else {
-                            // Fallback on earlier versions
-                        }
-                    return
-                }
-                completion(.success(location.coordinate))
+    public func getLocationCoordinates(place:Place, completion:@escaping(Result<CLLocationCoordinate2D, Error>)->Void){
+        guard let location = place.location else
+        {
+            if #available(iOS 13.0, *) {
+                //completion(.failure(AppError.unknownError))
+            } else {
+                // Fallback on earlier versions
+            }
+            return
         }
+        completion(.success(location.coordinate))
+    }
 }
